@@ -1,0 +1,66 @@
+#include <ESP8266WiFi.h>
+#include <FirebaseArduino.h>
+
+const int buttonPin = D0;
+
+
+#define firebaseURl "lightlevel-27691.firebaseio.com"
+#define authCode "44mqNnWFZwxBpsstq9jrVJWCnKc8PErnTUAFNx7j"
+#define wifiName "FAF"
+#define wifiPass "302001000"
+String chipId = "123";
+void setupFirebase() {
+  Firebase.begin(firebaseURl, authCode);
+ Firebase.set("/123/states/001", 0);
+   Firebase.set("123/states/002", 0);
+    Firebase.set("123/states/003", 0);
+     Firebase.set("123/states/name", "Mcu1");
+}
+
+void setupWifi() {
+
+  WiFi.begin(wifiName, wifiPass);
+
+  Serial.println("Hey i 'm connecting...");
+
+  while (WiFi.status() != WL_CONNECTED) {
+
+    Serial.print(".");
+    delay(500);
+  }
+  Serial.println();
+  Serial.println("connected and my IP address: ");
+  Serial.println(WiFi.localIP());
+}
+void setup() {
+  Serial.begin(9600);
+  setupWifi();
+  setupFirebase();
+  setupPinsMode();  
+}
+
+void writeData() {
+//int button = 0;
+// int newButton = digitalRead(buttonPin);
+ // if (newButton != button) {
+  //  button = newButton;
+  int button=90;
+    Firebase.setInt("123/states/001", button);
+    delay(100);
+  }
+void loop() {
+  writeData();
+
+}
+
+void setupPinsMode() {
+
+  // setup Pin mode as output.
+const int buttonPin = D0;
+ pinMode(buttonPin, INPUT);
+ // for (int i; i < totalDevices; i++) {
+
+ //   Serial.printf("Setup Output for pin %d", leds[i]);
+ //   pinMode(leds[i], OUTPUT);
+  }
+//}
